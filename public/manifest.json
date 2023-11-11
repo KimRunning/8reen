@@ -1,0 +1,23 @@
+{
+  "theme_color": "#317EFB",
+  "background_color": "#317EFB",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "친환경 우산 공유 웹 에이트린",
+  "short_name": "에이트린",
+  "icons": [
+    {
+      "src": "./icons/recycling.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "./icons/recycling192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}
