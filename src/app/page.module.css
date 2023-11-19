@@ -1,0 +1,32 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  background-color: aliceblue;
+  height: 80%;
+  justify-content: center;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 45%;
+  justify-content: space-between;
+}
+
+.loginWrap {
+  width: 90%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.loginBtn {
+  height: 40%;
+  border-radius: 70px;
+  border: none;
+  background-color: black;
+  color: white;
+}
