@@ -3,6 +3,8 @@ import Image from "next/image";
 import "./globals.css";
 import styles from "./layout.module.css";
 import backArrow from "../../public/icons/back_light_Arrow.png";
+import Navbar from "./components/navbar";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,9 +24,14 @@ export default function RootLayout({ children }) {
       <link rel="manifest" href="/manifest.json" />
       <body className={inter.className}>
         <header className={styles.header}>
-          <Image src={backArrow} alt={"뒤로가기"}></Image>
+          <Link href="/">
+            <Image src={backArrow} alt={"뒤로가기"}></Image>
+          </Link>
         </header>
         {children}
+        <footer className={styles.footer}>
+          <Navbar></Navbar>
+        </footer>
       </body>
     </html>
   );
