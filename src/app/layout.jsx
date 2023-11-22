@@ -27,8 +27,11 @@ export default function RootLayout({ children }) {
           <Link href="/">
             <Image src={backArrow} alt={"뒤로가기"}></Image>
           </Link>
+          <Link href="/myInfo">
+            <infoLocation>내정보</infoLocation>
+          </Link>
         </header>
-        {children}
+        <mainContents className={styles.mainContents}>{children}</mainContents>
         <footer className={styles.footer}>
           <Navbar></Navbar>
         </footer>
