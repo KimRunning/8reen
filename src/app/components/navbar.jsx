@@ -5,8 +5,12 @@ import Link from "next/link";
 function Navbar() {
   return (
     <>
-      <Link href="/signUp" className={styles.navber}>
-        signUp
+      <Link
+        href="/photoShot
+      "
+        className={styles.navber}
+      >
+        Photo
       </Link>
     </>
   );
