@@ -1,6 +1,16 @@
+.navWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
 .navbar {
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
-  background-color: black;
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  border: 1px solid gray;
+  text-align: center;
+  line-height: 60px;
+  text-decoration-line: none;
 }
