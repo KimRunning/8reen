@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./page.module.css";
 
-export default function MyInfo() {
+export default async function MyInfo() {
   return (
     <>
       <main className={styles.main}>
@@ -15,7 +15,7 @@ export default function MyInfo() {
         </section>
         <section className={styles.labelWrap}>
           <label className={styles.label}>현재 상태 대여중 or 반납완료</label>
-          <label className={styles.label}>환경 기여도</label>
+          <label className={styles.label}>탄소 배출에 기여도</label>
           <label className={styles.label}>남은 대여기간 or 마지막 사용일</label>
         </section>
       </main>

@@ -3,7 +3,7 @@ import Image from "next/image";
 import "./globals.css";
 import styles from "./layout.module.css";
 import backArrow from "../../public/icons/back_light_Arrow.png";
-import Navbar from "./components/navbar";
+import Navbar from "./components/navbar/navbar";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
