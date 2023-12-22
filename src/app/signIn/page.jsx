@@ -1,7 +1,14 @@
 import React from "react";
+import SignInComponent from "../components/signIn/signIn";
+import PostTest from "../components/signUp/PostTest";
 
 function SignIn() {
-  return <>이것은 로그인 페이지</>;
+  return (
+    <>
+      <SignInComponent />
+      <PostTest />
+    </>
+  );
 }
 
 export default SignIn;
