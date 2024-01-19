@@ -5,6 +5,8 @@ import styles from "./layout.module.css";
 import backArrow from "../../public/icons/back_light_Arrow.png";
 import Navbar from "./components/navbar/navbar";
 import Link from "next/link";
+import NextAuthSessionProvider from "./components/NextAuthSessionProvider";
+import Logout from "./components/logout/logout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,18 +25,21 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <link rel="manifest" href="/manifest.json" />
       <body className={inter.className}>
-        <header className={styles.header}>
-          <Link href="/">
-            <Image src={backArrow} alt={"뒤로가기"}></Image>
-          </Link>
-          <Link href="/">
-            <infoNav>홈</infoNav>
-          </Link>
-        </header>
-        <mainContents className={styles.mainContents}>{children}</mainContents>
-        <footer className={styles.footer}>
-          <Navbar></Navbar>
-        </footer>
+        <NextAuthSessionProvider>
+          <header className={styles.header}>
+            <Link href="/">
+              <Image src={backArrow} alt={"뒤로가기"}></Image>
+            </Link>
+            <Link href="/">
+              <infoNav>홈</infoNav>
+            </Link>
+            <Logout></Logout>
+          </header>
+          <mainContents className={styles.mainContents}>{children}</mainContents>
+          <footer className={styles.footer}>
+            <Navbar></Navbar>
+          </footer>
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
