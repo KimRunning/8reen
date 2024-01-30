@@ -24,8 +24,7 @@
 
 .loginBtn {
   height: 40%;
-  border-radius: 70px;
-  border: none;
-  background-color: black;
-  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

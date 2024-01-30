@@ -1,17 +1,29 @@
 "use client";
-import Kakao from "next-auth/providers/kakao";
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
+import Link from "next/link";
+import styles from "./logout.module.css";
 
 function Logout() {
+  const { data: session } = useSession();
   const LogOutLogic = () => {
     signOut();
-    console.log(useSession());
+    alert("로그아웃 되었습니다");
   };
 
   return (
     <>
-      <button onClick={LogOutLogic}>로그아웃하기</button>
+      {session ? (
+        <div onClick={LogOutLogic} className={styles.logOutBox}>
+          LogOut
+        </div>
+      ) : (
+        <div className={styles.moveLogInBox}>
+          <Link href="/logIn" className={styles.moveLogIn}>
+            LogIn
+          </Link>
+        </div>
+      )}
     </>
   );
 }

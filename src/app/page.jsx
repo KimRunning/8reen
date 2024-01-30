@@ -1,7 +1,6 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import Logo from "../../public/images/Logo.png";
-import Link from "next/link";
 import LogInSatus from "./components/logInSatus/logInSatus";
 
 export default function Home() {

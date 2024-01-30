@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     }
 
     // 사용자의 대여 상태 반환
-    res.status(200).json({ rented: userStatus.rented });
+    res.status(200).json({ rented: userStatus.rented, count: userStatus.count });
   } catch (error) {
     console.error("Database query failed:", error);
     res.status(500).json({ error: "Internal Server Error" });

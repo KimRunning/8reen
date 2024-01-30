@@ -3,24 +3,40 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./page.module.css";
 import { useSession } from "next-auth/react";
+import ScanQrCode from "../components/qrcode/page";
 
 function PhotoShot() {
   const session = useSession().data;
   const [rented, setRented] = useState(false);
+  const [isQRMode, setIsQRMode] = useState(true);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
   // 카메라 접근을 위한 useEffect
   useEffect(() => {
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then(stream => {
-          videoRef.current.srcObject = stream;
-        })
-        .catch(err => console.error("카메라 접근 오류:", err));
+    let stream = null;
+
+    async function setupCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play();
+      } catch (err) {
+        console.error("카메라 접근 오류:", err);
+      }
     }
-  }, []);
+
+    if (!isQRMode) {
+      setupCamera();
+    }
+
+    // 컴포넌트 언마운트 시 스트림 정리
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [isQRMode]);
 
   // 사용자 상태 조회를 위한 useEffect
   useEffect(() => {
@@ -55,33 +71,40 @@ function PhotoShot() {
   const handleRent = async () => {
     try {
       const photoBlob = await capturePhoto();
+      console.log(photoBlob);
+      if (!photoBlob) {
+        console.log("Photo capture failed");
+        return;
+      }
+
       const formData = new FormData();
       formData.append("photo", photoBlob, "rent-photo.jpg");
       formData.append("nickname", session.user.name);
 
-      const response = await axios.post("/api/rent/rent", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post("/api/rent/rent", formData);
 
       if (response.status === 200) {
         setRented(true);
         alert("대여 완료");
       }
     } catch (error) {
-      console.error("대여 요청 실패:", error);
+      console.log("대여 요청 실패:", error);
     }
   };
 
   const handleReturn = async () => {
     try {
       const photoBlob = await capturePhoto();
+      if (!photoBlob) {
+        console.error("Photo capture failed");
+        return;
+      }
+
       const formData = new FormData();
       formData.append("returnPhoto", photoBlob, "return-photo.jpg");
       formData.append("nickname", session.user.name);
 
-      const response = await axios.put("/api/rent/rent", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.put("/api/rent/rent", formData);
 
       if (response.status === 200) {
         setRented(false);
@@ -92,27 +115,38 @@ function PhotoShot() {
     }
   };
 
+  const toggleQRMode = () => {
+    setIsQRMode(!isQRMode);
+  };
+
   return (
     <main className={styles.PhotoSection}>
-      <h1>대여/반납</h1>
+      {rented ? <h1>반납</h1> : <h1>대여</h1>}
       <section className={styles.figWrap}>
-        <figure className={styles.PhotoShot}>
-          <video className={styles.PhotoShotZone} ref={videoRef} autoPlay></video>
-          <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
-        </figure>
-        <figcaption className={styles.PhotoTitle}>사진을 찍어 우산을 대여 / 반납 해보세요!</figcaption>
-      </section>
-      <div className={styles.PhotoShotBtnBox}>
-        {rented ? (
-          <button className={styles.PhotoShotBtn} onClick={handleReturn}>
-            반납하기
-          </button>
+        <figcaption className={styles.PhotoTitle}>사진 또는 QR로 우산을 대여 / 반납 해보세요!</figcaption>
+        {isQRMode ? (
+          <ScanQrCode></ScanQrCode>
         ) : (
-          <button className={styles.PhotoShotBtn} onClick={handleRent}>
-            대여하기
-          </button>
+          <>
+            <figure className={styles.PhotoShot}>
+              <video className={styles.PhotoShotZone} ref={videoRef}></video>
+              <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+            </figure>
+            <div className={styles.PhotoShotBtnBox}>
+              {rented ? (
+                <button className={styles.PhotoShotBtn} onClick={handleReturn}>
+                  반납하기
+                </button>
+              ) : (
+                <button className={styles.PhotoShotBtn} onClick={handleRent}>
+                  대여하기
+                </button>
+              )}
+            </div>
+          </>
         )}
-      </div>
+        <button onClick={toggleQRMode}>{isQRMode ? "사진으로 인증하기" : "QR코드로 인증하기"}</button>
+      </section>
     </main>
   );
 }

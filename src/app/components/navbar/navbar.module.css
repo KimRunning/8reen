@@ -9,8 +9,13 @@
   width: 60px;
   height: 60px;
   border-radius: 100%;
-  border: 1px solid gray;
+  background-color: rgb(140, 145, 143);
   text-align: center;
   line-height: 60px;
-  text-decoration-line: none;
+  text-decoration: none;
+  color: white;
+}
+
+.navbar:hover {
+  background-color: black;
 }

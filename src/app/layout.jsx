@@ -1,14 +1,19 @@
-import { Inter } from "next/font/google";
+import { Jua } from "next/font/google";
 import Image from "next/image";
 import "./globals.css";
 import styles from "./layout.module.css";
-import backArrow from "../../public/icons/back_light_Arrow.png";
+import leftArrow from "../../public/icons/back_light_Arrow.png";
+import home from "../../public/icons/home.png";
 import Navbar from "./components/navbar/navbar";
 import Link from "next/link";
 import NextAuthSessionProvider from "./components/NextAuthSessionProvider";
 import Logout from "./components/logout/logout";
 
-const inter = Inter({ subsets: ["latin"] });
+const jua = Jua({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "8REEN",
@@ -24,15 +29,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <link rel="manifest" href="/manifest.json" />
-      <body className={inter.className}>
+      <body className={jua.className}>
         <NextAuthSessionProvider>
           <header className={styles.header}>
-            <Link href="/">
-              <Image src={backArrow} alt={"뒤로가기"}></Image>
-            </Link>
-            <Link href="/">
-              <infoNav>홈</infoNav>
-            </Link>
+            <div className={styles.homeLoginWrap}>
+              <Link href="/">
+                <Image src={leftArrow} width={40} alt={"뒤로가기"}></Image>
+              </Link>
+              <Link href="/">
+                <Image src={home} width={40} alt={"홈 화면으로 가기"}></Image>
+              </Link>
+            </div>
             <Logout></Logout>
           </header>
           <mainContents className={styles.mainContents}>{children}</mainContents>
