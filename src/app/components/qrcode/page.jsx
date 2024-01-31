@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 
 function ScanQrCode() {
-  const [cameraFacing, setCameraFacing] = useState("user"); // 기본값은 'user'
+  const [cameraFacing, setCameraFacing] = useState("environment"); // 기본값은 'user'
   const session = useSession().data;
   const [rented, setRented] = useState(false); // 대여 상태를 관리하는 상태 변수
 
