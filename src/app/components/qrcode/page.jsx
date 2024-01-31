@@ -21,6 +21,7 @@ function ScanQrCode() {
   // 카메라 전환 함수
   const toggleCamera = () => {
     setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
+    console.log(cameraFacing);
   };
 
   const handleRentReturn = async qrCode => {
@@ -52,7 +53,15 @@ function ScanQrCode() {
   return (
     <>
       <div>
-        <QrReader delay={300} facingMode={cameraFacing} onError={handleErrorQR} onResult={handleQRScan} style={{ width: "100%" }} />
+        <QrReader
+          key={cameraFacing} // 카메라 방향 변경에 따라 키 값이 변경됩니다.
+          delay={300}
+          facingMode={cameraFacing}
+          onError={handleErrorQR}
+          onResult={handleQRScan}
+          style={{ width: "100%" }}
+        />
+
         <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
           <button
             onClick={toggleCamera}
