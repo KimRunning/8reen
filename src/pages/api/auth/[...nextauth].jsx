@@ -8,6 +8,7 @@ export const authOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET,
     }),
   ],
+  secret: process.env.SECRETHERE,
 };
 
 export default NextAuth(authOptions);
