@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useSession } from "next-auth/react";
