@@ -5,9 +5,18 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 
 function ScanQrCode() {
-  const [cameraFacing, setCameraFacing] = useState("user"); // 'user'는 전면, 'environment'는 후면 카메라
+  const [cameraFacing, setCameraFacing] = useState("user"); // 기본값은 'user'
   const session = useSession().data;
-  const [rented, setRented] = useState(false); // 대여 상태를 관리하는 상태 변수 (이전 코드에서 추가된 부분)
+  const [rented, setRented] = useState(false); // 대여 상태를 관리하는 상태 변수
+
+  useEffect(() => {
+    // 모바일 기기인지 확인
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      // 모바일 기기라면 카메라를 후면 카메라로 설정
+      setCameraFacing("environment");
+    }
+  }, []);
 
   // 카메라 전환 함수
   const toggleCamera = () => {
