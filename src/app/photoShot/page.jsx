@@ -139,21 +139,31 @@ function PhotoShot() {
               <video className={styles.PhotoShotZone} ref={videoRef}></video>
               <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
             </figure>
-            <div className={styles.PhotoShotBtnBox}>
-              {rented ? (
+
+            {rented ? (
+              <div className={styles.PhotoShotBtnBox}>
                 <button className={styles.PhotoShotBtn} onClick={handleReturn}>
                   반납하기
                 </button>
-              ) : (
+                <button onClick={toggleCamera} className={styles.PhotoShotBtn}>
+                  {cameraFacing === "environment" ? "화면 전환" : "화면 전환"}
+                </button>
+              </div>
+            ) : (
+              <div className={styles.PhotoShotBtnBox}>
                 <button className={styles.PhotoShotBtn} onClick={handleRent}>
                   대여하기
                 </button>
-              )}
-            </div>
+                <button onClick={toggleCamera} className={styles.PhotoShotBtn}>
+                  {cameraFacing === "environment" ? "화면 전환" : "화면 전환"}
+                </button>
+              </div>
+            )}
+
+            <p>우산과 우산택이 같이 나오게 촬영해주세요!</p>
           </>
-        )}
+        )}{" "}
         <button onClick={toggleQRMode}>{isQRMode ? "사진으로 인증하기" : "QR코드로 인증하기"}</button>
-        <button onClick={toggleCamera}>{cameraFacing === "environment" ? "전면 카메라" : "후면 카메라"}</button>
       </section>
     </main>
   );

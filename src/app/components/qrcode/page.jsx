@@ -40,11 +40,20 @@ function ScanQrCode() {
   };
 
   return (
-    <div>
-      <QrReader delay={300} facingMode={cameraFacing} onError={handleErrorQR} onResult={handleQRScan} style={{ width: "100%" }} />
-      <button onClick={toggleCamera}>{cameraFacing === "environment" ? "전면 카메라" : "후면 카메라"}</button>
-      <p>QR 코드를 카메라 앞에 위치시켜주세요.</p>
-    </div>
+    <>
+      <div>
+        <QrReader delay={300} facingMode={cameraFacing} onError={handleErrorQR} onResult={handleQRScan} style={{ width: "100%" }} />
+        <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <button
+            onClick={toggleCamera}
+            style={{ width: "70px", height: "70px", borderRadius: "50%", backgroundColor: "#bdbdbd", border: "transparent", margin: "10px" }}
+          >
+            {cameraFacing === "environment" ? "화면전환" : "화면전환"}
+          </button>
+        </div>
+        <p>QR 코드를 카메라 앞에 위치시켜주세요.</p>
+      </div>
+    </>
   );
 }
 

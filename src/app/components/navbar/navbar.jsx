@@ -37,7 +37,7 @@ function Navbar() {
         <Link href="/photoShot" className={styles.navbar}>
           photo
         </Link>
-        <Link href="`myInfo/${session.user.name}`" className={styles.navbar}>
+        <Link href={`/myInfo/${session?.user?.name}`} className={styles.navbar}>
           내정보
         </Link>
         {/* <span onClick={handleMyInfoClick} className={styles.navbar}>
