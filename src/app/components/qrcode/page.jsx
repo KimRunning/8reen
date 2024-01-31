@@ -1,10 +1,17 @@
-"use client";
+import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
 function ScanQrCode() {
+  const [cameraFacing, setCameraFacing] = useState("environment"); // 'user'는 전면, 'environment'는 후면 카메라
   const session = useSession().data;
+  const [rented, setRented] = useState(false); // 대여 상태를 관리하는 상태 변수 (이전 코드에서 추가된 부분)
+
+  // 카메라 전환 함수
+  const toggleCamera = () => {
+    setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
+  };
 
   const handleRentReturn = async qrCode => {
     try {
@@ -34,7 +41,8 @@ function ScanQrCode() {
 
   return (
     <div>
-      <QrReader delay={300} onError={handleErrorQR} onResult={handleQRScan} style={{ width: "100%" }} />
+      <QrReader delay={300} facingMode={cameraFacing} onError={handleErrorQR} onResult={handleQRScan} style={{ width: "100%" }} />
+      <button onClick={toggleCamera}>{cameraFacing === "environment" ? "전면 카메라" : "후면 카메라"}</button>
       <p>QR 코드를 카메라 앞에 위치시켜주세요.</p>
     </div>
   );

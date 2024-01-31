@@ -9,6 +9,7 @@ function PhotoShot() {
   const session = useSession().data;
   const [rented, setRented] = useState(false);
   const [isQRMode, setIsQRMode] = useState(true);
+  const [cameraFacing, setCameraFacing] = useState("environment"); // 'user'는 전면, 'environment'는 후면 카메라
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -18,7 +19,9 @@ function PhotoShot() {
 
     async function setupCamera() {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: cameraFacing },
+        });
         videoRef.current.srcObject = stream;
         await videoRef.current.play();
       } catch (err) {
@@ -36,9 +39,13 @@ function PhotoShot() {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-  }, [isQRMode]);
+  }, [isQRMode, cameraFacing]);
 
-  // 사용자 상태 조회를 위한 useEffect
+  // 카메라 전환 함수
+  const toggleCamera = () => {
+    setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
+  };
+
   useEffect(() => {
     const fetchRentedStatus = async () => {
       try {
@@ -125,7 +132,7 @@ function PhotoShot() {
       <section className={styles.figWrap}>
         <figcaption className={styles.PhotoTitle}>사진 또는 QR로 우산을 대여 / 반납 해보세요!</figcaption>
         {isQRMode ? (
-          <ScanQrCode></ScanQrCode>
+          <ScanQrCode />
         ) : (
           <>
             <figure className={styles.PhotoShot}>
@@ -146,6 +153,7 @@ function PhotoShot() {
           </>
         )}
         <button onClick={toggleQRMode}>{isQRMode ? "사진으로 인증하기" : "QR코드로 인증하기"}</button>
+        <button onClick={toggleCamera}>{cameraFacing === "environment" ? "전면 카메라" : "후면 카메라"}</button>
       </section>
     </main>
   );
