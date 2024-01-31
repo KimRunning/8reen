@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
 function ScanQrCode() {
-  const [cameraFacing, setCameraFacing] = useState("environment"); // 'user'는 전면, 'environment'는 후면 카메라
+  const [cameraFacing, setCameraFacing] = useState("user"); // 'user'는 전면, 'environment'는 후면 카메라
   const session = useSession().data;
   const [rented, setRented] = useState(false); // 대여 상태를 관리하는 상태 변수 (이전 코드에서 추가된 부분)
 
