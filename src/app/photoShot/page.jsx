@@ -71,6 +71,7 @@ function PhotoShot() {
     return new Promise(resolve => {
       canvas.toBlob(blob => {
         resolve(blob);
+        console.log("resolve(blob):", resolve(blob));
       });
     });
   };
