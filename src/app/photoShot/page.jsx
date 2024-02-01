@@ -78,7 +78,7 @@ function PhotoShot() {
   const handleRent = async () => {
     try {
       const photoBlob = await capturePhoto();
-      console.log(photoBlob);
+      console.log("photoBlob:", photoBlob);
       if (!photoBlob) {
         console.log("Photo capture failed");
         return;
@@ -87,6 +87,7 @@ function PhotoShot() {
       const formData = new FormData();
       formData.append("photo", photoBlob, "rent-photo.jpg");
       formData.append("nickname", session.user.name);
+      console.log("formData:", formData);
 
       const response = await axios.post("/api/rent/rent", formData);
 
