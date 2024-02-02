@@ -3,20 +3,25 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 import styles from "./loginSatus.module.css";
+import { useRouter } from "next/navigation";
 
 function LogInSatus() {
+  const router = useRouter();
   const { data: session } = useSession();
+
+  const MovePhotoShot = () => {
+    if (!session) {
+      alert("로그인이 필요합니다");
+      router.push("/logIn");
+    } else {
+      router.push("/photoShot");
+    }
+  };
   return (
     <>
-      {session ? (
-        <Link href="/photoShot" className={styles.rentLink}>
-          우산 대여하러 가기
-        </Link>
-      ) : (
-        <Link href="/logIn" className={styles.rentLink}>
-          우산 대여하러 가기
-        </Link>
-      )}
+      <span onClick={MovePhotoShot} href="/photoShot" className={styles.rentLink}>
+        우산 대여하러 가기
+      </span>
     </>
   );
 }
