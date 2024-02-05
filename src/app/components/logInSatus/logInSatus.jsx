@@ -1,6 +1,5 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import React from "react";
 import styles from "./loginSatus.module.css";
 import { useRouter } from "next/navigation";

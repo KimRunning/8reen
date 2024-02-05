@@ -34,12 +34,6 @@ function Navbar() {
         <span onClick={handlePhotoClick} className={styles.navbar}>
           Photo
         </span>
-        {/* <Link href="/photoShot" className={styles.navbar}>
-          photo
-        </Link> */}
-        {/* <Link href={`/myInfo/${session?.user?.name}`} className={styles.navbar}>
-          내정보
-        </Link> */}
         <span onClick={handleMyInfoClick} className={styles.navbar}>
           내정보
         </span>
