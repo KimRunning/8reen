@@ -2,7 +2,7 @@ import multer from "multer";
 import connectToDatabase from "../../../lib/mongodb";
 import fs from "fs";
 import path from "path";
-const uploadsDir = path.join("C:", "tmp", "uploads"); // Windows 환경에 맞게 경로 설정
+const uploadsDir = path.join("tmp", "uploads"); // Windows 환경에 맞게 경로 설정
 
 // 디렉토리가 없으면 생성
 if (!fs.existsSync(uploadsDir)) {
