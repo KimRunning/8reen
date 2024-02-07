@@ -1,10 +1,9 @@
 "use client";
-
 import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function ScanQrCode() {
   const [data, setData] = useState("QR 코드를 스캔해주세요");

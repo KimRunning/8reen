@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import styles from "./photo.module.css";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function Photo() {
   const [cameraFacing, setCameraFacing] = useState("environment");
