@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useState, useEffect } from "react";
 import jsQR from "jsqr";
 import { useSession } from "next-auth/react";
