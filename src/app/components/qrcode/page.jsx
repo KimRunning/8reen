@@ -55,7 +55,7 @@ function ScanQrCode() {
   // QR 코드 데이터를 서버에 전송하는 함수
   const handleQRData = async qrData => {
     try {
-      const response = await axios.post("/api/rent/action", {
+      const response = await axios.post("/api/rent/rent", {
         userId: session.user.id, // 사용자 세션에서 ID 추출
         qrCode: qrData,
       });
