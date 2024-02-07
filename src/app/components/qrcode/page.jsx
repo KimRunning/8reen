@@ -11,27 +11,24 @@ function ScanQrCode() {
   const [cameraFacing, setCameraFacing] = useState("environment");
   const { data: session } = useSession();
   const [error, setError] = useState("");
-  const [isScanning, setIsScanning] = useState(true); // 스캔 진행 중인지를 나타내는 상태
+  const [isScanning, setIsScanning] = useState(false); // 스캔 진행 중인지를 나타내는 상태
 
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: cameraFacing } })
-      .then(stream => {
-        videoRef.current.srcObject = stream;
-        videoRef.current.addEventListener("loadedmetadata", () => {
-          videoRef.current.play().catch(err => {
-            console.error("비디오 재생 실패:", err);
-          });
-        });
-      })
-      .catch(err => {
-        setError("카메라 접근에 실패했습니다. 카메라 권한을 확인해주세요.");
-        console.error(err);
-      });
+    let animationFrameId; // requestAnimationFrame의 ID를 저장하기 위한 변수
 
-    const context = canvasRef.current.getContext("2d");
+    const startScan = () => {
+      animationFrameId = requestAnimationFrame(scanQRCode);
+      setIsScanning(true);
+    };
+
+    const stopScan = () => {
+      cancelAnimationFrame(animationFrameId);
+      setIsScanning(false);
+    };
+
     const scanQRCode = () => {
-      // videoRef.current가 존재하고, 준비 상태가 HAVE_ENOUGH_DATA인지 확인합니다.
+      const context = canvasRef.current.getContext("2d");
+
       if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
         canvasRef.current.height = videoRef.current.videoHeight;
         canvasRef.current.width = videoRef.current.videoWidth;
@@ -44,17 +41,34 @@ function ScanQrCode() {
         if (code && isScanning) {
           console.log("Found QR code", code.data);
           handleQRData(code.data);
-          setIsScanning(false); // 에러 발생 시 스캔 중지
-          setTimeout(() => setIsScanning(true), 5000); // 5초 후에 다시 스캔 허용
+          stopScan(); // 스캔 후 스캔 중지
         }
       }
-      requestAnimationFrame(scanQRCode);
+      animationFrameId = requestAnimationFrame(scanQRCode); // 다음 프레임에 스캔 계속
     };
 
-    scanQRCode();
+    navigator.mediaDevices
+      .getUserMedia({ video: { facingMode: cameraFacing } })
+      .then(stream => {
+        videoRef.current.srcObject = stream;
+        videoRef.current.addEventListener("loadedmetadata", () => {
+          videoRef.current.play().catch(err => {
+            console.error("비디오 재생 실패:", err);
+          });
+        });
+        startScan(); // 카메라 접근에 성공하면 스캔 시작
+      })
+      .catch(err => {
+        setError("카메라 접근에 실패했습니다. 카메라 권한을 확인해주세요.");
+        console.error(err);
+      });
+
+    return () => {
+      // 컴포넌트 언마운트 시 requestAnimationFrame 정리
+      cancelAnimationFrame(animationFrameId);
+    };
   }, [cameraFacing]);
 
-  // QR 코드 데이터를 서버에 전송하는 함수
   const handleQRData = async qrData => {
     try {
       const response = await axios.post("/api/rent/rent", {
@@ -64,19 +78,22 @@ function ScanQrCode() {
 
       if (response.data.success) {
         alert(`작업 성공: ${response.data.message}`);
-        // 추가적인 상태 업데이트나 페이지 전환 로직이 여기에 올 수 있습니다.
       } else {
-        alert(`작업 실패: ${response.data.message}`);
+        alert(`작업 실패: ${response.data.message || "알 수 없는 오류가 발생했습니다."}`);
       }
     } catch (error) {
+      const errorMessage = error.response?.data?.message || "서버 요청 중 문제가 발생했습니다.";
       console.error("서버 요청 실패:", error);
-      alert("서버 요청 중 문제가 발생했습니다.");
+      alert(`작업 실패: ${errorMessage}`);
     }
   };
 
-  // 카메라 전환 함수
   const toggleCamera = () => {
     setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
+  };
+
+  const handleScanButtonClick = () => {
+    startScan(); // "다시 스캔하기" 버튼 클릭 시 스캔 시작
   };
 
   return (
@@ -88,6 +105,7 @@ function ScanQrCode() {
       </figure>
       <div>
         <button onClick={toggleCamera}>카메라 전환</button>
+        <button onClick={handleScanButtonClick}>다시 스캔하기</button>
       </div>
     </>
   );

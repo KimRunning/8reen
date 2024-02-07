@@ -2,7 +2,6 @@ import multer from "multer";
 import connectToDatabase from "../../../lib/mongodb";
 import fs from "fs";
 import path from "path";
-import { IncomingMessage } from "http";
 const uploadsDir = path.join("/tmp", "uploads"); // 절대 경로 사용
 
 // 디렉토리가 없으면 생성
