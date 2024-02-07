@@ -17,7 +17,9 @@ function PhotoShot() {
       <section className={styles.figWrap}>
         <figcaption className={styles.PhotoTitle}>사진 또는 QR로 우산을 대여 / 반납 해보세요!</figcaption>
         {isQRMode ? <ScanQrCode /> : <Photo />}
-        <button onClick={toggleQRMode}>{isQRMode ? "사진으로 인증하기" : "QR코드로 인증하기"}</button>
+        <button onClick={toggleQRMode} className={styles.changeBtn}>
+          {isQRMode ? "사진으로 인증하기" : "QR코드로 인증하기"}
+        </button>
       </section>
     </main>
   );

@@ -6,16 +6,11 @@ import styles from "./photo.module.css";
 import { useRouter } from "next/navigation";
 
 function Photo() {
-  const [cameraFacing, setCameraFacing] = useState("environment");
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const session = useSession().data;
   const [rented, setRented] = useState(false); // 대여 상태를 관리하는 상태 변수
   const router = useRouter();
-  // 카메라 전환 함수
-  const toggleCamera = () => {
-    setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
-  };
 
   useEffect(() => {
     let stream = null;
@@ -23,7 +18,7 @@ function Photo() {
     async function setupCamera() {
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: cameraFacing },
+          video: { facingMode: "environment" },
         });
         videoRef.current.srcObject = stream;
         // 비디오 메타데이터가 로드된 후 재생을 시도합니다.
@@ -47,7 +42,7 @@ function Photo() {
         stream.getTracks().forEach(track => track.stop());
       }
     };
-  }, [cameraFacing]);
+  }, []);
 
   useEffect(() => {
     const fetchRentedStatus = async () => {
@@ -138,21 +133,16 @@ function Photo() {
         <video className={styles.PhotoShotZone} ref={videoRef}></video>
         <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
       </figure>
-      <div className={styles.PhotoShotBtnBox}>
-        {rented ? (
-          <button className={styles.PhotoShotBtn} onClick={handleReturn}>
-            반납하기
-          </button>
-        ) : (
-          <button className={styles.PhotoShotBtn} onClick={handleRent}>
-            대여하기
-          </button>
-        )}
-        <button onClick={toggleCamera} className={styles.PhotoShotBtn}>
-          화면 전환
-        </button>
-      </div>
       <p>우산과 우산택이 같이 나오게 촬영해주세요!</p>
+      {rented ? (
+        <button className={styles.PhotoShotBtn} onClick={handleReturn}>
+          반납하기
+        </button>
+      ) : (
+        <button className={styles.PhotoShotBtn} onClick={handleRent}>
+          대여하기
+        </button>
+      )}
     </>
   );
 }

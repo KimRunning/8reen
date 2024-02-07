@@ -18,3 +18,21 @@
   text-align: center;
   width: 80%;
 }
+
+.changeBtn {
+  width: 40%;
+  height: 60px;
+  border-radius: 10px;
+  background-color: rgba(112, 223, 189, 0.877);
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: 600;
+}
+
+.changeBtn:hover {
+  background-color: black;
+  color: white;
+}

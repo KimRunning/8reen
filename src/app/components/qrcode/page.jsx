@@ -28,6 +28,10 @@ function ScanQrCode() {
     };
 
     const scanQRCode = () => {
+      if (!canvasRef.current) {
+        return; // canvasRef가 null일 경우 함수 종료
+      }
+
       const context = canvasRef.current.getContext("2d");
 
       if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
@@ -101,9 +105,10 @@ function ScanQrCode() {
         <video ref={videoRef} className={styles.PhotoShotZone}></video>
         <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
       </figure>
-      <div>
-        <button onClick={handleScanButtonClick}>다시 스캔하기</button>
-      </div>
+      <p>QR코드를 스캔해주세요!</p>
+      <button onClick={handleScanButtonClick} className={styles.retryBtn}>
+        다시 스캔하기
+      </button>
     </>
   );
 }

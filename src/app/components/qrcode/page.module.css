@@ -9,3 +9,23 @@
   display: flex;
   justify-content: center;
 }
+
+.retryBtn {
+  width: 40%;
+  height: 60px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: rgb(236, 205, 121);
+  text-align: center;
+  line-height: 60px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  font-size: medium;
+  font-weight: 600;
+}
+
+.retryBtn:hover {
+  background-color: black;
+  color: white;
+}
