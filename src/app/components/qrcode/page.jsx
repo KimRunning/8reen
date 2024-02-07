@@ -22,6 +22,7 @@ function ScanQrCode() {
         })
         .then(response => {
           alert("처리 성공");
+          router.push("/myInfo");
           // 처리 성공 후 리다이렉션 또는 추가 로직
         })
         .catch(error => {

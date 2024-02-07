@@ -125,6 +125,7 @@ function Photo() {
       if (response.status === 200) {
         setRented(false);
         alert("반납 완료");
+        router.push("/myInfo");
       }
     } catch (error) {
       console.error("반납 요청 실패:", error);
