@@ -20,8 +20,11 @@ function ScanQrCode() {
 
   // 카메라 전환 함수
   const toggleCamera = () => {
-    setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
-    console.log(cameraFacing);
+    setCameraFacing(prevFacing => {
+      const newFacing = prevFacing === "environment" ? "user" : "environment";
+      console.log(newFacing); // 업데이트 될 새로운 상태를 로깅
+      return newFacing;
+    });
   };
 
   const handleRentReturn = async qrCode => {
