@@ -10,10 +10,7 @@ async function connectToDatabase() {
   }
 
   // 새로운 연결 생성
-  const client = new MongoClient(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  const client = new MongoClient(process.env.MONGODB_URI);
 
   await client.connect();
   const db = client.db("8reen"); // 여기서 데이터베이스 이름을 명시하세요

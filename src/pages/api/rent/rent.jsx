@@ -2,12 +2,29 @@ import multer from "multer";
 import connectToDatabase from "../../../lib/mongodb";
 import fs from "fs";
 import path from "path";
+import { IncomingMessage } from "http";
 const uploadsDir = path.join("/tmp", "uploads"); // 절대 경로 사용
 
 // 디렉토리가 없으면 생성
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
+
+const parseBody = req => {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", chunk => {
+      body += chunk.toString();
+    });
+    req.on("end", () => {
+      try {
+        resolve(JSON.parse(body));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+};
 
 // 파일 저장을 위한 디스크 스토리지 설정
 const storage = multer.diskStorage({
@@ -72,8 +89,11 @@ export default async function handler(req, res) {
         const result = await db.collection("rent").updateOne({ nickname }, update, { upsert: true });
         res.json(result);
       } else {
-        // QR 코드 데이터 처리
-        const { nickname, qrCode } = req.body; // JSON 바디 파싱이 필요합니다.
+        // 요청 본문 파싱
+        const body = await parseBody(req);
+        const { nickname, qrCode } = body;
+
+        // QR 코드 데이터 처리 로직...
         const userStatus = await db.collection("rent").findOne({ nickname });
         const rentedStatus = userStatus ? !userStatus.rented : true;
 

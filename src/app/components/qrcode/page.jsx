@@ -11,6 +11,7 @@ function ScanQrCode() {
   const [cameraFacing, setCameraFacing] = useState("environment");
   const { data: session } = useSession();
   const [error, setError] = useState("");
+  const [isScanning, setIsScanning] = useState(true); // 스캔 진행 중인지를 나타내는 상태
 
   useEffect(() => {
     navigator.mediaDevices
@@ -40,10 +41,11 @@ function ScanQrCode() {
           inversionAttempts: "dontInvert",
         });
 
-        if (code) {
+        if (code && isScanning) {
           console.log("Found QR code", code.data);
-          // QR 코드 데이터 처리 로직
           handleQRData(code.data);
+          setIsScanning(false); // 에러 발생 시 스캔 중지
+          setTimeout(() => setIsScanning(true), 5000); // 5초 후에 다시 스캔 허용
         }
       }
       requestAnimationFrame(scanQRCode);
