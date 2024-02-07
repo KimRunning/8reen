@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import jsQR from "jsqr";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import styles from "./page.module.css";
 
 function ScanQrCode() {
   const videoRef = useRef(null);
@@ -16,6 +17,11 @@ function ScanQrCode() {
       .getUserMedia({ video: { facingMode: cameraFacing } })
       .then(stream => {
         videoRef.current.srcObject = stream;
+        videoRef.current.addEventListener("loadedmetadata", () => {
+          videoRef.current.play().catch(err => {
+            console.error("비디오 재생 실패:", err);
+          });
+        });
       })
       .catch(err => {
         setError("카메라 접근에 실패했습니다. 카메라 권한을 확인해주세요.");
@@ -24,7 +30,8 @@ function ScanQrCode() {
 
     const context = canvasRef.current.getContext("2d");
     const scanQRCode = () => {
-      if (videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
+      // videoRef.current가 존재하고, 준비 상태가 HAVE_ENOUGH_DATA인지 확인합니다.
+      if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
         canvasRef.current.height = videoRef.current.videoHeight;
         canvasRef.current.width = videoRef.current.videoWidth;
         context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -72,13 +79,13 @@ function ScanQrCode() {
 
   return (
     <>
-      <div>
+      <figure className={styles.PhotoShot}>
         {error && <p>{error}</p>}
-        <video ref={videoRef} style={{ display: "none" }}></video>
+        <video ref={videoRef} className={styles.PhotoShotZone}></video>
         <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
-        <div>
-          <button onClick={toggleCamera}>카메라 전환</button>
-        </div>
+      </figure>
+      <div>
+        <button onClick={toggleCamera}>카메라 전환</button>
       </div>
     </>
   );
