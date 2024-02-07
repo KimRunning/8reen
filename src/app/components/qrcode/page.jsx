@@ -4,14 +4,15 @@ import jsQR from "jsqr";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 function ScanQrCode() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [cameraFacing, setCameraFacing] = useState("environment");
   const { data: session } = useSession();
   const [error, setError] = useState("");
   const [isScanning, setIsScanning] = useState(false); // 스캔 진행 중인지를 나타내는 상태
+  const router = useRouter();
 
   useEffect(() => {
     let animationFrameId; // requestAnimationFrame의 ID를 저장하기 위한 변수
@@ -48,7 +49,7 @@ function ScanQrCode() {
     };
 
     navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: cameraFacing } })
+      .getUserMedia({ video: { facingMode: "environment" } })
       .then(stream => {
         videoRef.current.srcObject = stream;
         videoRef.current.addEventListener("loadedmetadata", () => {
@@ -67,7 +68,7 @@ function ScanQrCode() {
       // 컴포넌트 언마운트 시 requestAnimationFrame 정리
       cancelAnimationFrame(animationFrameId);
     };
-  }, [cameraFacing]);
+  }, []);
 
   const handleQRData = async qrData => {
     try {
@@ -78,6 +79,7 @@ function ScanQrCode() {
 
       if (response.data.success) {
         alert(`작업 성공: ${response.data.message}`);
+        router.push(`/myInfo/${session.user.name}`);
       } else {
         alert(`작업 실패: ${response.data.message || "알 수 없는 오류가 발생했습니다."}`);
       }
@@ -86,10 +88,6 @@ function ScanQrCode() {
       console.error("서버 요청 실패:", error);
       alert(`작업 실패: ${errorMessage}`);
     }
-  };
-
-  const toggleCamera = () => {
-    setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
   };
 
   const handleScanButtonClick = () => {
@@ -104,7 +102,6 @@ function ScanQrCode() {
         <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
       </figure>
       <div>
-        <button onClick={toggleCamera}>카메라 전환</button>
         <button onClick={handleScanButtonClick}>다시 스캔하기</button>
       </div>
     </>

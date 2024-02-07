@@ -98,7 +98,7 @@ function Photo() {
       if (response.status === 200) {
         setRented(true);
         alert("대여 완료");
-        router.push("/myInfo");
+        router.push(`/myInfo/${session.user.name}`);
       } else {
         throw new Error("대여 처리 중 문제가 발생했습니다.");
       }
@@ -125,7 +125,7 @@ function Photo() {
       if (response.status === 200) {
         setRented(false);
         alert("반납 완료");
-        router.push("/myInfo");
+        router.push(`/myInfo/${session.user.name}`);
       }
     } catch (error) {
       console.error("반납 요청 실패:", error);
