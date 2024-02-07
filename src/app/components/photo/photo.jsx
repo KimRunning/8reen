@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import styles from "./photo.module.css";
+import { useRouter } from "next/router";
 
 function Photo() {
   const [cameraFacing, setCameraFacing] = useState("environment");
@@ -10,7 +11,7 @@ function Photo() {
   const canvasRef = useRef(null);
   const session = useSession().data;
   const [rented, setRented] = useState(false); // 대여 상태를 관리하는 상태 변수
-
+  const router = useRouter();
   // 카메라 전환 함수
   const toggleCamera = () => {
     setCameraFacing(prevFacing => (prevFacing === "environment" ? "user" : "environment"));
@@ -97,6 +98,7 @@ function Photo() {
       if (response.status === 200) {
         setRented(true);
         alert("대여 완료");
+        router.push("/myInfo");
       } else {
         throw new Error("대여 처리 중 문제가 발생했습니다.");
       }
